@@ -1,5 +1,6 @@
 from django.core.validators import RegexValidator,MinValueValidator,MaxValueValidator
 from django.db import models
+from category.models import Category
 # Create your models here.
 
 
@@ -9,6 +10,11 @@ class Product(models.Model):
     description=models.TextField()
     image=models.ImageField()
     slug_url=models.SlugField()
+    category_1=models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,related_name='rootcategory')
+    category_2=models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,related_name='secound_category')
+    category_3=models.ForeignKey(Category,null=True,blank=True,on_delete=models.SET_NULL,related_name='third_category')
+    category_4=models.ForeignKey(Category,null=True,blank=True,on_delete=models.SET_NULL,related_name='forth_category')
+
 
     def __str__(self) -> str:
         return self.title_brief
