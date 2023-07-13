@@ -51,6 +51,7 @@ OTHER_APPS=[
 
 MY_APPS=[
     'product',
+    'category',
 ]
 
 
