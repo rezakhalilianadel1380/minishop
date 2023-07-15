@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product,ProductAttr,ProductGallery,ProductVarient
+from .models import Product,ProductAttr,ProductGallery,ProductVarient,Size,Color
 # Register your models here.
 
 
@@ -26,3 +26,5 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Product,ProductAdmin)
+admin.site.register(Size)
+admin.site.register(Color)
