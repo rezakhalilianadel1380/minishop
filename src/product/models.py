@@ -3,6 +3,10 @@ from django.db import models
 from category.models import Category
 # Create your models here.
 
+product_varient=(
+    ("color","رنگ"),
+    ("size","اندازه")
+)
 
 class Product(models.Model):
     title=models.CharField(max_length=100)
@@ -10,6 +14,7 @@ class Product(models.Model):
     description=models.TextField()
     image=models.ImageField()
     slug_url=models.SlugField()
+    product_varient=models.CharField(choices=product_varient,max_length=50,null=True,blank=True)
     category_1=models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,related_name='rootcategory')
     category_2=models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,related_name='secound_category')
     category_3=models.ForeignKey(Category,null=True,blank=True,on_delete=models.SET_NULL,related_name='third_category')
@@ -40,6 +45,10 @@ class ProductAttr(models.Model):
 class Size(models.Model):
     title=models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.title
+    
+
 class Color(models.Model):
     title_fa=models.CharField(max_length=20)
     title_en=models.CharField(max_length=20)
@@ -53,12 +62,10 @@ class Color(models.Model):
 variant_types=(
     ('color','رنگ'),
     ('size','اندازه'),
-    ('width','ابعاد'),
 )
 
 class ProductVarient(models.Model):
     product_id=models.ForeignKey(Product,on_delete=models.CASCADE)
-    variant_type=models.CharField(choices=variant_types,max_length=10)
     size_id=models.ForeignKey(Size,on_delete=models.SET_NULL,null=True)
     color_id=models.ForeignKey(Color,on_delete=models.SET_NULL,null=True)
     weight=models.IntegerField(default=0,help_text="واحد به گرم میباشد")
