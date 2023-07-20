@@ -265,13 +265,13 @@
                     <!-- Shop Wrapper Start -->
                     <div class="row shop-wrapper grid_list">
 
-                       {% for product in product_list %}
+                       {% for product in page_obj %}
                             <div class="col-12 mb-20">
                                 <!-- Single-Prodproduct_listct-Start -->
                                 <div class="item-product pt-0">
                                     <div class="product-thumb">
                                         <a href="product-details.html">
-                                            <img src="assets/images/product/product-12.jpg" alt="" class="img-fluid">
+                                            <img src="{{product.image.url}}" alt="" class="img-fluid">
                                         </a>
                                         <div class="box-label">
                                             <div class="label-product-new">
@@ -280,7 +280,6 @@
                                         </div>
                                         <div class="action-link">
                                             <a class="quick-view same-link" href="#" title="دسترسی سریع" data-bs-toggle="modal" data-bs-target="#modal_box" data-original-title="quick view"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></a>
-                                            <a class="compare-add same-link" href="compare.html" title="افزودن به مقایسه ها"><i class="zmdi zmdi-refresh-alt"></i></a>
                                             <a class="wishlist-add same-link" href="wishlist.html" title="افزودن به علاقه مندی‌ها"><i class="zmdi zmdi-favorite-outline zmdi-hc-fw"></i></a>
                                         </div>
                                     </div>
@@ -296,8 +295,13 @@
                                             <span class="yellow"><i class="fa fa-star"></i></span>
                                         </div>
                                         <div class="price-box">
-                                            <span class="regular-price">320,000 تومان</span>
-                                            <span class="old-price"><del>350,000 تومان</del></span>
+                                            {% if product.dicount_percent != 0 %}
+                                            <span class="regular-price">{{product.get_price_with_discount}} تومان</span>
+                                            <span class="old-price"><del>{{product.get_price}} تومان</del></span>
+                                            {% else %}
+                                            <span class="regular-price">{{product.get_price}} تومان</span>
+                                            {% endif %}
+                                            
                                         </div>
                                         <div class="cart">
                                             <div class="add-to-cart">
@@ -317,19 +321,25 @@
                                             <span class="yellow"><i class="fa fa-star"></i></span>
                                         </div>
                                         <div class="price-box">
-                                            <span class="regular-price">{{product.get_price}}</span>
+                                            {% if product.dicount_percent != 0 %}
+                                                    <span class="regular-price">{{product.get_price_with_discount}} تومان</span>
+                                                    <span class="old-price"><del>{{product.get_price}} تومان</del></span>
+                                            {% else %}
+                                            <span class="regular-price">{{product.get_price}} تومان</span>
+                                            {% endif %}
+                                            
+                                           
                                         </div>
-                                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است ، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
+                                        <p>{{product.description|truncatewords:20 }}</p>
                                         <div class="text-available">
                                             <p><strong>موجودیت: </strong><span> در انبار </span></p>
                                         </div>
                                         <div class="action-link">
                                             <a class="quick-view same-link" href="#" title="دسترسی سریع" data-bs-toggle="modal" data-bs-target="#modal_box" data-original-title="quick view"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></a>
-                                            <a class="compare-add same-link" href="compare.html" title="افزودن به مقایسه ها"><i class="zmdi zmdi-refresh-alt"></i></a>
                                             <a class="wishlist-add same-link" href="wishlist.html" title="افزودن به علاقه مندی‌ها"><i class="zmdi zmdi-favorite-outline zmdi-hc-fw"></i></a>
                                         </div>
-                                        <div class="cart-list-button">
-                                            <a href="shopping-cart.html" class="cart-btn">افزودن به سبد خرید </a>
+                                        <div class="cart-list-button d-flex justify-content-end">
+                                            <a href="shopping-cart.html" class="cart-btn" style="background-color:#408ed4">افزودن به سبد خرید </a>
                                         </div>
                                     </div>
                                 </div>
@@ -345,11 +355,23 @@
                         </div>
                         <div class="pagination">
                             <ul>
-                                <li class="previous"><a href="#"><i class="fa fa-angle-left"></i> قبلی </a></li>
-                                <li class="current">1</li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li class="next"><a href="#"> بعدی <i class="fa fa-angle-right"></i></a></li>
+                                {% if page_obj.has_previous %} 
+                                    <li class="previous"><a href="#"><i class="fa fa-angle-left"></i> قبلی </a></li>
+                                {% endif %}   
+
+                                {% for page in paginator.page_range %}
+                                    {% if page == page_obj.number%}
+                                        <li class="current">{{page}}</li>
+                                    {% else %}
+                                    <li><a href="#">{{page}}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                     <li class="next"><a href="#"> بعدی <i class="fa fa-angle-right"></i></a></li>
+
+                                {% endif %}
+                               
                             </ul>
                         </div>
                     </div>

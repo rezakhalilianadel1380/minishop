@@ -26,8 +26,15 @@ class Product(models.Model):
         self.slug_url = slugify(self.title_fa)
         super(Product, self).save(*args, **kwargs)
 
+    def get_price_with_discount(self):
+        varient=self.productvarient_set.filter(is_deafult=True).first()
+        discount_percent=varient.dicount_percent
+        varient_price=int(varient.price)
+        total_price= varient_price - int(varient_price*(discount_percent/100))
+        return intcomma(total_price)
+
     def get_price(self):
-        varient=self.productvarient_set.all().first()
+        varient=self.productvarient_set.filter(is_deafult=True).first()
         return intcomma(varient.price)
 
     def __str__(self) -> str:
