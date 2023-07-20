@@ -2,6 +2,7 @@ from django.core.validators import RegexValidator,MinValueValidator,MaxValueVali
 from django.db import models
 from django.utils.text import slugify
 from category.models import Category
+from django.contrib.humanize.templatetags.humanize import intcomma
 # Create your models here.
 
 product_varient=(
@@ -25,17 +26,20 @@ class Product(models.Model):
         self.slug_url = slugify(self.title_fa)
         super(Product, self).save(*args, **kwargs)
 
+    def get_price(self):
+        varient=self.productvarient_set.all().first()
+        return intcomma(varient.price)
 
     def __str__(self) -> str:
         return self.title_fa
 
 class ProductGallery(models.Model):
-    image=models.ImageField()
+    image=models.ImageField(upload_to = 'products_gallery/')
     product_id=models.ForeignKey(Product,on_delete=models.CASCADE)
     title=models.CharField(max_length=20,null=True,blank=True)
 
     def __str__(self) -> str:
-        return self.product.title_brief 
+        return self.product_id.title_fa
     
 
 
@@ -75,7 +79,7 @@ class ProductVarient(models.Model):
     color_id=models.ForeignKey(Color,on_delete=models.SET_NULL,null=True,blank=True)
     weight=models.IntegerField(default=0,help_text="واحد به گرم میباشد")
     dicount_percent=models.IntegerField(default=0,validators=[MinValueValidator(0,'بازه اعداد باید بالاتر صفر باشد '),MaxValueValidator(100,"تخفیف بالاتر از عدد 100 مجاز نیست ")])
-    price=models.DecimalField(max_digits=13,decimal_places=2)
+    price=models.DecimalField(max_digits=13,decimal_places=0)
     is_deafult=models.BooleanField(default=False)
     quantity=models.IntegerField(default=1,help_text="موجودیت")
     
