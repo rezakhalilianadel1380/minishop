@@ -356,20 +356,22 @@
                         <div class="pagination">
                             <ul>
                                 {% if page_obj.has_previous %} 
-                                    <li class="previous"><a href="#"><i class="fa fa-angle-left"></i> قبلی </a></li>
+                                    <li class="previous"><a href="?page={{page_obj.previous_page_number}}"><i class="fa fa-angle-left"></i> قبلی </a></li>
                                 {% endif %}   
-
-                                {% for page in paginator.page_range %}
+                                {% for page in  page_obj.adjusted_elided_pages %}
                                     {% if page == page_obj.number%}
                                         <li class="current">{{page}}</li>
                                     {% else %}
-                                    <li><a href="#">{{page}}</a></li>
+                                            {% if page ==  page_obj.paginator.ELLIPSIS %}
+                                                <li><a>{{page}}</a></li>
+                                            {% else %}
+                                                <li><a href="?page={{page}}">{{page}}</a></li>
+                                            {% endif %}
                                     {% endif %}
                                 {% endfor %}
 
                                 {% if page_obj.has_next %}
-                                     <li class="next"><a href="#"> بعدی <i class="fa fa-angle-right"></i></a></li>
-
+                                     <li class="next"><a href="?page={{ page_obj.next_page_number }}"> بعدی <i class="fa fa-angle-right"></i></a></li>
                                 {% endif %}
                                
                             </ul>
