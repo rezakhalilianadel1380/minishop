@@ -246,7 +246,7 @@
                             <button data-role="grid_list" class="btn-list active"></button>
                         </div>
                         <div class="page-amount">
-                            <p> 10 محصول وجود دارد </p>
+                            <p> {{paginator.count}} محصول وجود دارد </p>
                         </div>
                         <div class="nice-select select-option">
                             <select name="select">
@@ -351,7 +351,7 @@
                     <!-- Shop Toolbar Start -->
                     <div class="toolbar-shop toolbar-bottom">
                         <div class="page-amount">
-                            <p> نمایش 1-10 از 30 نتیجه </p>
+                            <p> نمایش {{page_obj.number}}-{{paginator.num_pages}} از {{paginator.count}} نتیجه </p>
                         </div>
                         <div class="pagination">
                             <ul>
