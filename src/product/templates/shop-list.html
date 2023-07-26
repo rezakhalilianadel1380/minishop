@@ -70,7 +70,7 @@
                                     <ul>
                                         {% for sub in subcategory %}
                                             <li>
-                                                <input name="subcategory" value="{{sub.title_en}}" onchange="addsubcategory(this)" type="checkbox">
+                                                <input name="subcategory" {% if request.GET.subcategory == sub.title_en %}checked{% endif %} value="{{sub.title_en}}" onchange="addsubcategory(this)" type="checkbox">
                                                 <a href="#">{{sub.title_fa}}</a>
                                                 <span class="checkmark"></span>
                                             </li>
@@ -84,9 +84,9 @@
                                     <h4 class="title-shop"> زیر دسته بندی </h4>
                                 </div>
                                 <ul>
-                                    {% for category in  tirdcategory  %}
+                                    {% for category in  thirdcategory  %}
                                     <li>
-                                        <input type="checkbox" >
+                                        <input type="checkbox" onchange='addthird(this)' name='thirdcategory' value='{{category.title_en}}'>
                                         <a href="#">{{category.title_fa}}</a>
                                         <span class="checkmark"></span>
                                     </li>
@@ -164,7 +164,7 @@
                                             <span class="yellow"><i class="fa fa-star"></i></span>
                                         </div>
                                         <div class="price-box">
-                                            {% if product.dicount_percent != 0 %}
+                                            {% if product.is_discount %}
                                             <span class="regular-price">{{product.get_price_with_discount}} تومان</span>
                                             <span class="old-price"><del>{{product.get_price}} تومان</del></span>
                                             {% else %}
@@ -190,14 +190,12 @@
                                             <span class="yellow"><i class="fa fa-star"></i></span>
                                         </div>
                                         <div class="price-box">
-                                            {% if product.dicount_percent != 0 %}
-                                                    <span class="regular-price">{{product.get_price_with_discount}} تومان</span>
-                                                    <span class="old-price"><del>{{product.get_price}} تومان</del></span>
+                                            {% if product.is_discount %}
+                                            <span class="regular-price">{{product.get_price_with_discount}} تومان</span>
+                                            <span class="old-price"><del>{{product.get_price}} تومان</del></span>
                                             {% else %}
                                             <span class="regular-price">{{product.get_price}} تومان</span>
                                             {% endif %}
-                                            
-                                           
                                         </div>
                                         <p>{{product.description|truncatewords:20 }}</p>
                                         <div class="text-available">
@@ -281,6 +279,26 @@ function addmaincategory(obj){
 function addsubcategory(obj){
     const urlSearchParams = new URLSearchParams(window.location.search);
     checkboxes=document.getElementsByName('subcategory');
+    is_checked=obj.checked;
+    for (let checkbox=0;checkbox < checkboxes.length ; checkbox++){
+            checkboxes[checkbox].checked=false;
+    }
+    obj.checked=is_checked;
+    const params = Object.fromEntries(urlSearchParams.entries());
+    if (obj.checked) {
+       params[obj.name] = obj.value;
+    } else {
+       // Checkbox is unchecked, remove the parameter from the URL
+       delete params[obj.name];
+    }
+    const searchParams = new URLSearchParams(params);
+    const newUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
+    history.pushState(null, '', newUrl);
+    window.location.reload();
+}
+function addthird(obj){
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    checkboxes=document.getElementsByName('thirdcategory');
     is_checked=obj.checked;
     for (let checkbox=0;checkbox < checkboxes.length ; checkbox++){
             checkboxes[checkbox].checked=false;

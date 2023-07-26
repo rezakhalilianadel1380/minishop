@@ -26,6 +26,21 @@ class Product(models.Model):
         self.slug_url = slugify(self.title_fa)
         super(Product, self).save(*args, **kwargs)
 
+
+    def choice_deafult(self):
+        varient=self.productvarient_set.filter(is_deafult=True).first()
+        if varient.quantity > 0:
+            return varient
+        varient=self.productvarient_set.filter(quantity__gte=0).first()
+        return varient
+
+    
+    def is_discount(self):
+        varient=self.choice_deafult()
+        if varient.dicount_percent == 0:
+            return False
+        return True
+
     def get_price_with_discount(self):
         varient=self.productvarient_set.filter(is_deafult=True).first()
         discount_percent=varient.dicount_percent

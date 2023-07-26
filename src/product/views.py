@@ -26,7 +26,7 @@ class ProductListView(ListView):
         subcategory=request.GET.get('subcategory')
         if subcategory:
             tirdcategory=Category.objects.filter(sub_category__title_en=subcategory,depth=2)
-            context['tirdcategory']=tirdcategory
+            context['thirdcategory']=tirdcategory
         return context
     
 
@@ -38,5 +38,8 @@ class ProductListView(ListView):
             products=products.filter(category_1__title_en=maincategory,category_1__depth=0)
         subcategory=request.GET.get('subcategory')
         if subcategory:
-            products=products.filter(category_2__title_en=subcategory,category_1__depth=1)
+            products=products.filter(category_2__title_en=subcategory,category_2__depth=1)
+        thirdcategory=request.GET.get('thirdcategory')
+        if thirdcategory:
+            products=products.filter(category_3__title_en=thirdcategory,category_3__depth=2)
         return products
