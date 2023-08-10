@@ -1,7 +1,7 @@
 FROM python:latest
 
 RUN mkdir /src
-COPY  ./src  /src
+COPY  .  /src
 
 WORKDIR /src
 

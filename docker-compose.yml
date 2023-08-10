@@ -6,7 +6,7 @@ services:
     command : gunicorn -w 4 --bind 0.0.0.0:8000  shop.wsgi 
     volumes:
       - ./src:/src
-      - staticfiles:/src/static_cdn/
+      - staticfiles:./src/static_cdn/
     ports:
       - 8000:8000
     depends_on:
@@ -24,7 +24,7 @@ services:
   db:
     image:  postgres:latest
     env_file:
-      - ./.env
+      - ./src/.env
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}

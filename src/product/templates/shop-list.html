@@ -165,7 +165,7 @@
                                         </div>
                                         <div class="price-box">
                                             {% if product.is_discount %}
-                                            <span class="regular-price">{{product.get_price_with_discount}} تومان</span>
+                                            <span class="regular-price">{{product.get_total_price}} تومان</span>
                                             <span class="old-price"><del>{{product.get_price}} تومان</del></span>
                                             {% else %}
                                             <span class="regular-price">{{product.get_price}} تومان</span>
@@ -191,7 +191,7 @@
                                         </div>
                                         <div class="price-box">
                                             {% if product.is_discount %}
-                                            <span class="regular-price">{{product.get_price_with_discount}} تومان</span>
+                                            <span class="regular-price">{{product.get_total_price}} تومان</span>
                                             <span class="old-price"><del>{{product.get_price}} تومان</del></span>
                                             {% else %}
                                             <span class="regular-price">{{product.get_price}} تومان</span>

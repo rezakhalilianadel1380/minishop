@@ -41,7 +41,7 @@ class Product(models.Model):
             return False
         return True
 
-    def get_price_with_discount(self):
+    def get_total_price(self):
         varient=self.productvarient_set.filter(is_deafult=True).first()
         discount_percent=varient.dicount_percent
         varient_price=int(varient.price)
