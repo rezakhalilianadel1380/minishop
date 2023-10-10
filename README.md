@@ -1,5 +1,5 @@
 # ecommerce
-django web application 
+Django Web Application 
 
 
 # technology
