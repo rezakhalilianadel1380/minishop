@@ -3,28 +3,15 @@ services:
   django:
     build: 
       context: ./src
-    command : gunicorn -w 4 --bind 0.0.0.0:8000  shop.wsgi 
+    command : bash -c "python manage.py migrate &&  gunicorn -w 4 --bind 0.0.0.0:8000 shop.wsgi"
     volumes:
       - ./src:/src
-      - staticfiles:./src/static_cdn/
     ports:
       - 8000:8000
     depends_on:
-      - db
-  nginx:
-    build: 
-      context: ./nginx
-    volumes:
-      - staticfiles:/var/www/static
-    ports:
-      - 80:80
-      - 443:443
-    depends_on:
-      - django
-  db:
+      - postgres
+  postgres:
     image:  postgres:latest
-    env_file:
-      - ./src/.env
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -38,7 +25,7 @@ services:
 
 volumes:
   postgres_data:
-  staticfiles:
+  
  
 
     

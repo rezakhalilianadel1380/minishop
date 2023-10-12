@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from category.models import Category
 from .models import Product
+
+# from django.db import connections,reset_queries
 # Create your views here.
 
 class ProductListView(ListView):
@@ -33,6 +35,7 @@ class ProductListView(ListView):
     def get_queryset(self, *args, **kwargs):
         request=self.request
         products=Product.objects.all()
+        
         maincategory=request.GET.get('maincategory')
         if maincategory:
             products=products.filter(category_1__title_en=maincategory,category_1__depth=0)
