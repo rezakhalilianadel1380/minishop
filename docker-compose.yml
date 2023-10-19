@@ -3,7 +3,7 @@ services:
   django:
     build: 
       context: ./src
-    command : bash -c "python manage.py migrate &&  gunicorn -w 4 --bind 0.0.0.0:8000 shop.wsgi"
+    command : bash -c "python manage.py migrate &&  python manage.py runserver"
     volumes:
       - ./src:/src
     ports:
